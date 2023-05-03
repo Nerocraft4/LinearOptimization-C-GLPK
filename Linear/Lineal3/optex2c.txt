@@ -1,0 +1,49 @@
+#Exercici  2. Incineració de Residus Urbans
+
+#Variables
+var camins{1..8} >= 0;
+param dist{1..8};
+param produccio_ciutat{1..2};
+param cost_incin{1..2};
+param capacitat_incin{1..2};
+param EPK;
+
+#Funció Objectiu (Tenim cost de transport, falta cost dincinerar)
+minimize z: (sum{i in 1..8} EPK*dist[i]*camins[i])
+	   +(camins[1]+camins[3])*cost_incin[1]
+	   +(camins[2]+camins[4])*cost_incin[2];
+
+#Restriccions
+subject to r1: camins[1]+camins[2]=produccio_ciutat[1];
+subject to r2: camins[3]+camins[4]=produccio_ciutat[2];
+subject to r3: camins[1]+camins[3]<=capacitat_incin[1];
+subject to r4: camins[2]+camins[4]<=capacitat_incin[2];
+subject to r5: camins[5]+camins[6]=0.2*(camins[1]+camins[3]);
+subject to r6: camins[7]+camins[8]=0.2*(camins[2]+camins[4]);
+subject to r7: camins[1]<=300;
+subject to r8: camins[2]<=301;
+subject to r9: camins[3]<=300;
+subject to r10: camins[4]<=300;
+
+#Dades
+data;
+param : produccio_ciutat :=
+	1 500
+	2 400;
+param : capacitat_incin :=
+	1 500
+	2 600;
+param : cost_incin :=
+	1 40
+	2 30;
+param EPK := 3;
+param : dist := 
+	1 30
+	2 20
+	3 36
+	4 42
+	5 5
+	6 8
+	7 9
+	8 6;
+end;
